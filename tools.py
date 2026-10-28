@@ -10,8 +10,17 @@ load_dotenv()
 
 api_key = os.getenv("TAVILY_API_KEY")
 if not api_key:
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets") and "TAVILY_API_KEY" in st.secrets:
+            api_key = st.secrets["TAVILY_API_KEY"]
+            os.environ["TAVILY_API_KEY"] = api_key
+    except Exception:
+        pass
+
+if not api_key:
     raise ValueError(
-        "TAVILY_API_KEY is missing. Check your project-root .env file."
+        "TAVILY_API_KEY is missing. Check your project-root .env file or Streamlit Cloud secrets."
     )
 
 tavily = TavilyClient(api_key=api_key)

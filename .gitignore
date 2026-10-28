@@ -48,5 +48,5 @@ yarn-error.log*
 Thumbs.db
 
 # Studio temporary cache & logs
-.streamlit/
+.streamlit/secrets.toml
 *.log

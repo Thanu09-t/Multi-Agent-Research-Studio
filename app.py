@@ -13,6 +13,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Bridge Streamlit Cloud Secrets into os.environ for cloud deployments
+try:
+    if hasattr(st, "secrets"):
+        for _k, _v in st.secrets.items():
+            if isinstance(_v, str) and _k not in os.environ:
+                os.environ[_k] = _v
+    if "GEMINI_API_KEY" in os.environ and "GOOGLE_API_KEY" not in os.environ:
+        os.environ["GOOGLE_API_KEY"] = os.environ["GEMINI_API_KEY"]
+except Exception:
+    pass
+
 st.set_page_config(
     page_title="Research Studio",
     page_icon=None,

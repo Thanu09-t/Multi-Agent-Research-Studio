@@ -13,6 +13,25 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 _GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
 _OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 
+# Support Streamlit Cloud secrets fallback
+if not _GEMINI_API_KEY and not _OPENAI_API_KEY:
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets"):
+            _GEMINI_API_KEY = (
+                st.secrets.get("GEMINI_API_KEY")
+                or st.secrets.get("GOOGLE_API_KEY")
+                or ""
+            )
+            _OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY", "")
+            if _GEMINI_API_KEY:
+                os.environ["GEMINI_API_KEY"] = _GEMINI_API_KEY
+                os.environ["GOOGLE_API_KEY"] = _GEMINI_API_KEY
+            if _OPENAI_API_KEY:
+                os.environ["OPENAI_API_KEY"] = _OPENAI_API_KEY
+    except Exception:
+        pass
+
 if _GEMINI_API_KEY:
     from langchain_google_genai import ChatGoogleGenerativeAI
     active_model = "gemini-3.5-flash"

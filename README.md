@@ -94,3 +94,20 @@ docker build -t research-studio .
 # Run with environment variables
 docker run -d -p 8501:8501 --env-file .env research-studio
 ```
+
+---
+
+## Streamlit Community Cloud Deployment
+
+1. Fork or push this repository to GitHub.
+2. Sign in to [share.streamlit.io](https://share.streamlit.io).
+3. Click **New app** and select:
+   - **Repository:** `Multi-Agent-Research-Studio`
+   - **Branch:** `main`
+   - **Main file path:** `app.py`
+4. Expand **Advanced settings → Secrets** and add your credentials in TOML format:
+   ```toml
+   TAVILY_API_KEY = "tvly-..."
+   GEMINI_API_KEY = "..."
+   ```
+5. Click **Deploy**. The application will automatically build and launch.
