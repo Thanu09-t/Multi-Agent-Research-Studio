@@ -1,0 +1,7 @@
+.venv
+__pycache__
+*.pyc
+.env
+.git
+.gitignore
+research_report.json
